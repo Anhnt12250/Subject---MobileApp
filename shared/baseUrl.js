@@ -1,0 +1,1 @@
+export const baseUrl = 'https://mobileapp-json-server.onrender.com/';

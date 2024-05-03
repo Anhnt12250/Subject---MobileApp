@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import { Text, FlatList } from 'react-native';
 import { Card, ListItem, Avatar } from 'react-native-elements';
 import { ScrollView } from 'react-native-virtualized-view';
-import { LEADERS } from '../shared/leaders';
+//import { LEADERS } from '../shared/leaders';
+import { baseUrl } from '../shared/baseUrl';
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state) => {
+  return {
+    leaders: state.leaders
+  }
+};
 
 class RenderHistory extends Component {
   render() {
@@ -29,10 +37,11 @@ class RenderLeadership extends Component {
       </Card>
     );
   }
+
   renderLeaderItem(item, index) {
     return (
       <ListItem key={index}>
-        <Avatar rounded source={require('./images/alberto.png')} />
+        <Avatar rounded source={{ uri: baseUrl + item.image}} />
         <ListItem.Content>
           <ListItem.Title style={{ fontWeight: 'bold' }}>{item.name}</ListItem.Title>
           <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
@@ -45,17 +54,18 @@ class RenderLeadership extends Component {
 class About extends Component {
   constructor(props) {
     super(props);
-    this.state = {
+    /*this.state = {
       leaders: LEADERS
-    };
+    };*/
   }
   render() {
     return (
       <ScrollView>
         <RenderHistory />
-        <RenderLeadership leaders={this.state.leaders} />
+        <RenderLeadership leaders={this.props.leaders.leaders} />
       </ScrollView>
     );
   }
 }
-export default About;
+
+export default connect(mapStateToProps)(About);
