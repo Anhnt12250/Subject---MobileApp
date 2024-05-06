@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Text } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { baseUrl } from '../shared/baseUrl';
+import Loading from './Loading';
 
 // redux
 import { connect } from 'react-redux';
@@ -15,19 +16,23 @@ class Menu extends Component {
   constructor(props) {
     super(props);
   }
-
   render() {
-    return (
-      <FlatList data={this.props.dishes.dishes}
-      renderItem={({ item, index }) => this.renderMenuItem(item, index)}
-      keyExtractor={(item) => item.id.toString()} />
-    );
+    if (this.props.dishes.isLoading) {
+      return <Loading />;
+    } else if (this.props.dishes.errMess) {
+      return (<Text>{this.props.errMess}</Text>);
+    } else {
+      return (
+        <FlatList data={this.props.dishes.dishes}
+        renderItem={({ item, index }) => this.renderMenuItem(item, index)}
+        keyExtractor={(item) => item.id.toString()} />
+      );
+    }
   }
-
   renderMenuItem(item, index) {
     const { navigate } = this.props.navigation;
     return (
-      <ListItem key={index} onPress={() => navigate('Dishdetail', { dishId: item.id })}>
+      <ListItem key={index} onPress={() => navigate('DishDetail', { dishId: item.id })}>
         <Avatar  source={{uri: baseUrl + item.image}} />
         <ListItem.Content>
           <ListItem.Title>{item.name}</ListItem.Title>
@@ -37,5 +42,4 @@ class Menu extends Component {
     );
   }
 }
-
 export default connect(mapStateToProps)(Menu);
