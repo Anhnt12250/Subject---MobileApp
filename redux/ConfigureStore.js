@@ -6,6 +6,7 @@ import { leaders } from './leaders';
 import { dishes } from './dishes';
 import { comments } from './comments';
 import { promotions } from './promotions';
+import { favorites } from './favorites';
 
 const thunk = require('redux-thunk').thunk;
 
@@ -15,7 +16,8 @@ export const ConfigureStore = () => {
             leaders,
             dishes,
             comments,
-            promotions
+            promotions,
+            favorites
         }),
         applyMiddleware(thunk, logger)
     );

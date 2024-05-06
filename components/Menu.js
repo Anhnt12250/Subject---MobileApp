@@ -32,7 +32,7 @@ class Menu extends Component {
   renderMenuItem(item, index) {
     const { navigate } = this.props.navigation;
     return (
-      <ListItem key={index} onPress={() => navigate('DishDetail', { dishId: item.id })}>
+      <ListItem key={index} onPress={() => navigate('Dishdetail', { dishId: item.id })}>
         <Avatar  source={{uri: baseUrl + item.image}} />
         <ListItem.Content>
           <ListItem.Title>{item.name}</ListItem.Title>
