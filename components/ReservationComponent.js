@@ -5,6 +5,19 @@ import { Picker } from '@react-native-picker/picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { format } from 'date-fns';
 
+class ModalContent extends Component {
+  render() {
+    return (
+      <View style={styles.modal}>
+        <Text style={styles.modalTitle}>Your Reservation</Text>
+        <Text style={styles.modalText}>Number of Guests: {this.props.guests}</Text>
+        <Text style={styles.modalText}>Smoking?: {this.props.smoking ? 'Yes' : 'No'}</Text>
+        <Text style={styles.modalText}>Date and Time: {format(this.props.date, 'dd/MM/yyyy - HH:mm')}</Text>
+        <Button title='Close' color='#7cc' onPress={() => this.props.onPressClose()} />
+      </View>
+    );
+  }
+}
 class Reservation extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +34,7 @@ class Reservation extends Component {
       <ScrollView>
         <View style={styles.formRow}>
           <Text style={styles.formLabel}>Number of Guests</Text>
-          <Picker style={styles.formItem} selectedValue={this.state.guests} onValueChange={(value) => this.setState({ guests: value })}>
+          <Picker style={styles.formItem}  selectedValue={this.state.guests} onValueChange={(value) => this.setState({ guests: value })}>
             <Picker.Item label='1' value='1' />
             <Picker.Item label='2' value='2' />
             <Picker.Item label='3' value='3' />
@@ -30,12 +43,10 @@ class Reservation extends Component {
             <Picker.Item label='6' value='6' />
           </Picker>
         </View>
-
         <View style={styles.formRow}>
           <Text style={styles.formLabel}>Smoking/No-Smoking?</Text>
           <Switch style={styles.formItem} value={this.state.smoking} onValueChange={(value) => this.setState({ smoking: value })} />
         </View>
-
         <View style={styles.formRow}>
           <Text style={styles.formLabel}>Date and Time</Text>
           <Icon name='schedule' size={36} onPress={() => this.setState({ showDatePicker: true })} />
@@ -58,24 +69,12 @@ class Reservation extends Component {
     );
   }
   handleReservation() {
-    //alert(JSON.stringify(this.state));
+    // alert(JSON.stringify(this.state));
     this.setState({ showModal: true });
   }
 }
 
-class ModalContent extends Component {
-    render() {
-      return (
-        <View style={styles.modal}>
-          <Text style={styles.modalTitle}>Your Reservation</Text>
-          <Text style={styles.modalText}>Number of Guests: {this.props.guests}</Text>
-          <Text style={styles.modalText}>Smoking?: {this.props.smoking ? 'Yes' : 'No'}</Text>
-          <Text style={styles.modalText}>Date and Time: {format(this.props.date, 'dd/MM/yyyy - HH:mm')}</Text>
-          <Button title='Close' color='#7cc' onPress={() => this.props.onPressClose()} />
-        </View>
-      );
-    }
-}
+
 
 export default Reservation;
 
