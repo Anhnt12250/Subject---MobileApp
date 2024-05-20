@@ -1,28 +1,36 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Card, Divider } from 'react-native-elements'; 
+import { Card, Divider } from 'react-native-elements';
+import * as Animatable from 'react-native-animatable';
 
 const ContactComponent = () => {
   return (
-    <Card containerStyle={styles.cardContainer}>
+    <Animatable.View animation="fadeInDown" duration={2000} delay={300}>
+      <Card containerStyle={styles.cardContainer}>
+      
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Contact Information</Text>
       </View>
+
       <Divider style={styles.divider} />
+      
       <Text style={styles.text}>
         <Text style={styles.bold}>Address:</Text>
         121, Clear Water Bay Road{"\n"}
         Clear Water Bay, Kowloon{"\n"}
         HONG KONG
       </Text>
+      
       <Text style={styles.text}>
         <Text style={styles.bold}>Tel:</Text> +852 1234 5678{"\n"}
         <Text style={styles.bold}>Fax:</Text> +852 8765 4321{"\n"}
         <Text style={styles.bold}>Email:</Text> confusion@food.net
       </Text>
-    </Card>
-  );
-}
+      
+      </Card>
+    </Animatable.View>
+  )
+};
 
 const styles = StyleSheet.create({
   cardContainer: {

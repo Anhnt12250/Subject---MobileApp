@@ -2,9 +2,9 @@ import React,  {Component}  from 'react';
 import { View, Text, FlatList, Modal, Button } from 'react-native';
 import { Card, Image, Icon, Rating, Input } from 'react-native-elements';
 import {ScrollView} from 'react-native-virtualized-view';
-// import { DISHES } from '../shared/dishes';
-// import { COMMENTS } from '../shared/comments';
 import { baseUrl } from '../shared/baseUrl';
+import * as Animatable from 'react-native-animatable';
+
 
 // redux
 import { connect } from 'react-redux';
@@ -22,11 +22,6 @@ const mapDispatchToProps = (dispatch) => ({
   postFavorite: (dishId) => dispatch(postFavorite(dishId)),
   postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment))
 });
-
-// import { postComment } from '../redux/ActionCreators';
-// const mapDispatchToProps = (dispatch) => ({
-//   postComment: (dishId) => dispatch(postComment(dishId))
-// });
 
 class RenderDish extends Component {
   render() {
@@ -83,11 +78,6 @@ class RenderComments extends Component {
 class Dishdetail extends Component {
   constructor(props){
     super(props);
-    // this.state = {
-    //   dishes: DISHES,
-    //   comments: COMMENTS,
-    //   favorites: [],
-    // };
     this.state = {
       showModal: false,
       rating: 5,
@@ -115,35 +105,40 @@ class Dishdetail extends Component {
     
     return (
       <ScrollView>
-        <RenderDish dish={dish}
-        favorite={favorite} 
-        onPressFavorite={() => this.markFavorite(dishId)}
-        onPressComment={() => this.setState({showModal: true})} />
+        <Animatable.View animation="fadeInDown" duration={2000} delay={300}>
+          <RenderDish dish={dish}
+          favorite={favorite} 
+          onPressFavorite={() => this.markFavorite(dishId)}
+          onPressComment={() => this.setState({showModal: true})} />
+        </Animatable.View>
 
-        <RenderComments comments={comments}/>
-        <Modal visible={this.state.showModal}
-          onRequestClose={() => this.setState({ showModal: false })}>
-          <View style={{ justifyContent: 'center', margin: 20 }}>
-            <Rating startingValue={this.state.rating} showRating={true}
-              onFinishRating={(value) => this.setState({ rating: value })} />
-            <View style={{ height: 20 }} />
-            <Input placeholder='Author' leftIcon={{ name: 'user-o', type: 'font-awesome' }}
-              onChangeText={(text) => setAuthor(text)} />
-            <Input placeholder='Comment' leftIcon={{ name: 'comment-o', type: 'font-awesome' }}
-              onChangeText={(text) => setComment(text)} />
+        <Animatable.View animation="fadeInDown" duration={2000} delay={300}>
+          <RenderComments comments={comments}/>
+        </Animatable.View>
 
-            <View style={{ justifyContent: 'center' }}>
-              <Button title='SUBMIT' color='#7cc' 
-                onPress={() => { this.submitComment(dishId, inputAuthor, inputComment); this.setState({ showModal: false }); }} />
-              <View style={{ marginVertical: 10 }} />
-              <Button title='CANCEL' color='#ccc'
-                onPress={() => { this.setState({ showModal: false }); }} />
+        <Animatable.View animation="fadeInDown" duration={2000} delay={300}>
+          <Modal visible={this.state.showModal}
+            onRequestClose={() => this.setState({ showModal: false })}>
+            <View style={{ justifyContent: 'center', margin: 20 }}>
+              <Rating startingValue={this.state.rating} showRating={true}
+                onFinishRating={(value) => this.setState({ rating: value })} />
+              <View style={{ height: 20 }} />
+              <Input placeholder='Author' leftIcon={{ name: 'user-o', type: 'font-awesome' }}
+                onChangeText={(text) => setAuthor(text)} />
+              <Input placeholder='Comment' leftIcon={{ name: 'comment-o', type: 'font-awesome' }}
+                onChangeText={(text) => setComment(text)} />
+
+              <View style={{ justifyContent: 'center' }}>
+                <Button title='SUBMIT' color='#7cc' 
+                  onPress={() => { this.submitComment(dishId, inputAuthor, inputComment); this.setState({ showModal: false }); }} />
+                <View style={{ marginVertical: 10 }} />
+                <Button title='CANCEL' color='#ccc'
+                  onPress={() => { this.setState({ showModal: false }); }} />
+              </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        </Animatable.View>
       </ScrollView>
-      // <RenderDish dish={this.props.dish} />
-      
     );
   }
 

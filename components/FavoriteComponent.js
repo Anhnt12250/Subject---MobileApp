@@ -4,6 +4,7 @@ import { FlatList, Text, View, TouchableOpacity, Alert } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import { baseUrl } from '../shared/baseUrl';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import * as Animatable from 'react-native-animatable';
 
 // redux
 import { connect } from 'react-redux';
@@ -29,11 +30,13 @@ class Favorites extends Component {
     } else {
       const dishes = this.props.dishes.dishes.filter((dish) => this.props.favorites.some((el) => el === dish.id));
       return (
-        <SwipeListView data={dishes}
-        renderItem={({ item, index }) => this.renderMenuItem(item, index)}
-        renderHiddenItem={({ item, index }) => this.renderHiddenItem(item, index)}
-        keyExtractor={(item) => item.id.toString()}
-        rightOpenValue={-100} />
+        <Animatable.View animation='fadeInRightBig' duration={300}>
+          <SwipeListView data={dishes}
+          renderItem={({ item, index }) => this.renderMenuItem(item, index)}
+          renderHiddenItem={({ item, index }) => this.renderHiddenItem(item, index)}
+          keyExtractor={(item) => item.id.toString()}
+          rightOpenValue={-100} />
+        </Animatable.View>
       );
     }
   }
