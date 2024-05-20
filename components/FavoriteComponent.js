@@ -1,17 +1,24 @@
 import React, { Component } from 'react';
-import { FlatList, Text } from 'react-native';
-import { ListItem, Avatar } from 'react-native-elements';
 import Loading from './LoadingComponent';
+import { FlatList, Text, View, TouchableOpacity } from 'react-native';
+import { ListItem, Avatar } from 'react-native-elements';
 import { baseUrl } from '../shared/baseUrl';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 // redux
 import { connect } from 'react-redux';
+import { deleteFavorite } from '../redux/ActionCreators';
+
 const mapStateToProps = (state) => {
   return {
     dishes: state.dishes,
     favorites: state.favorites
   }
 };
+
+const mapDispatchToProps = (dispatch) => ({
+    deleteFavorite: (dishId) => dispatch(deleteFavorite(dishId))
+});
 
 class Favorites extends Component {
   render() {
@@ -22,9 +29,11 @@ class Favorites extends Component {
     } else {
       const dishes = this.props.dishes.dishes.filter((dish) => this.props.favorites.some((el) => el === dish.id));
       return (
-        <FlatList data={dishes}
-          renderItem={({ item, index }) => this.renderMenuItem(item, index)}
-          keyExtractor={(item) => item.id.toString()} />
+        <SwipeListView data={dishes}
+        renderItem={({ item, index }) => this.renderMenuItem(item, index)}
+        renderHiddenItem={({ item, index }) => this.renderHiddenItem(item, index)}
+        keyExtractor={(item) => item.id.toString()}
+        rightOpenValue={-100} />
       );
     }
   }
@@ -41,6 +50,17 @@ class Favorites extends Component {
       </ListItem>
     );
   }
+
+  renderHiddenItem(item, index) {
+    return (
+      <View style={{ alignItems: 'center', backgroundColor: '#DDD', flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingLeft: 15 }}>
+        <TouchableOpacity style={{ alignItems: 'center', justifyContent: 'center', position: 'absolute', top: 0, bottom: 0, right: 0, width: 100, backgroundColor: 'red' }}
+          onPress={() => this.props.deleteFavorite(item.id)}>
+          <Text style={{ color: '#FFF' }}>Delete</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }
 
-export default connect(mapStateToProps)(Favorites);
+export default connect(mapStateToProps, mapDispatchToProps)(Favorites);

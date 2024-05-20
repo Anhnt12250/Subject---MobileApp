@@ -11,6 +11,7 @@ export const DISHES_FAILED = 'DISHES_FAILED';
 // comments
 export const ADD_COMMENTS = 'ADD_COMMENTS';
 export const COMMENTS_FAILED = 'COMMENTS_FAILED'; 
+
 //postcomment
 export const ADD_COMMENT = 'ADD_COMMENT'
 
@@ -21,3 +22,4 @@ export const PROMOS_FAILED = 'PROMOS_FAILED';
 
 // favorites
 export const ADD_FAVORITE = 'ADD_FAVORITE';
+export const DELETE_FAVORITE = 'DELETE_FAVORITE';
