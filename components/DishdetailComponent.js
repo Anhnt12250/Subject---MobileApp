@@ -31,6 +31,13 @@ class RenderDish extends Component {
       if (dx < -200) return 1; // right to left
       return 0;
     };
+
+    const recognizeComment = ({moveX, moveY, dx, dy}) => {
+      if(dx > 200)
+        return 2; // left to right
+      return 0;
+    }
+
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (e, gestureState) => { return true; },
       onPanResponderEnd: (e, gestureState) => {
@@ -44,9 +51,13 @@ class RenderDish extends Component {
             ]
           );
         }
+        else if(recognizeComment(gestureState) === 2){
+          this.props.onPressComment();
+        }
         return true;
       }
     });
+
     // render
     const dish = this.props.dish;
     if (dish != null) {
