@@ -15,7 +15,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     LogBox.ignoreLogs([
-      'TextElement: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.'
+      'TextElement: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.',
+      'Warning: Unknown: Support for defaultProps will be removed from memo components in a future major release. Use JavaScript default parameters instead.',
+      'Warning: TextElement: Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.'
     ]);
   }
 
