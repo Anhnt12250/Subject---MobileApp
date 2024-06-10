@@ -1,9 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Card, Divider } from 'react-native-elements';
+import { Card, Divider, Button, Icon } from 'react-native-elements';
 import * as Animatable from 'react-native-animatable';
+import * as MailComposer from 'expo-mail-composer';
 
+const composeMail =() => {
+  MailComposer.composeAsync({
+    recipients: ['son.tranghong@hoasen.edu.vn'],
+    subject: 'From Confusion',
+    body: 'Hello my friends ...'
+  });
+}
 const ContactComponent = () => {
+
   return (
     <Animatable.View animation="fadeInDown" duration={2000} delay={300}>
       <Card containerStyle={styles.cardContainer}>
@@ -26,11 +35,15 @@ const ContactComponent = () => {
         <Text style={styles.bold}>Fax:</Text> +852 8765 4321{"\n"}
         <Text style={styles.bold}>Email:</Text> confusion@food.net
       </Text>
-      
+
+      <Button title=' Compose Email' buttonStyle={{ backgroundColor: '#7cc' }}
+            icon={<Icon name='envelope-o' type='font-awesome' color='white' />}
+            onPress={composeMail} />
       </Card>
     </Animatable.View>
   )
-};
+}
+
 
 const styles = StyleSheet.create({
   cardContainer: {

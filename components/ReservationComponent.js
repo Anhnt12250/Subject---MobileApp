@@ -5,6 +5,7 @@ import { Picker } from '@react-native-picker/picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { format } from 'date-fns';
 import * as Animatable from 'react-native-animatable';
+import * as Notifications from 'expo-notifications';
 
 class ModalContent extends Component {
   render() {
@@ -27,8 +28,7 @@ class Reservation extends Component {
       guests: 1,
       smoking: false,
       date: new Date(),
-      showDatePicker: false,
-      showModal: false
+      showDatePicker: false, 
     }
   }
   render() {
@@ -64,19 +64,11 @@ class Reservation extends Component {
           <View style={styles.formRow}>
             <Button title='Reserve' color='#7cc' onPress={() => this.handleReservation()} />
           </View>
-
-          <Modal animationType={'slide'} visible={this.state.showModal}
-            onRequestClose={() => this.setState({ showModal: false })}>
-            <ModalContent guests={this.state.guests} smoking={this.state.smoking} date={this.state.date}
-              onPressClose={() => this.setState({ showModal: false })} />
-          </Modal>
         </Animatable.View>
       </ScrollView>
     );
   }
   handleReservation() {
-    // alert(JSON.stringify(this.state));
-    // this.setState({ showModal: true });
     Alert.alert(
       'Your Revervation OK?',
       'Number of Guests: ' + this.state.guests + 
@@ -84,10 +76,30 @@ class Reservation extends Component {
       '\nDate and Time: ' + this.state.date.toISOString(),
       [
         { text: 'Cancel', onPress: () => this.resetForm() },
-        { text: 'OK', onPress: () => {this.resetForm(); }},
-        // { text: 'OK', onPress: () => this.setState({ showModal: true}) },
-      ],
+        { text: 'OK', onPress: () => {
+          this.presentLocalNotification(this.state.date);
+          this.resetForm();
+        }},
+      ]
     );
+  }
+
+  async presentLocalNotification(date) {
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status === 'granted') {
+      Notifications.setNotificationHandler({
+        handleNotification: async () => ({ shouldShowAlert: true, shouldPlaySound: true, shouldSetBadge: true })
+      });
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Your Reservation',
+          body: 'Reservation for ' + date + ' requested',
+          sound: true,
+          vibrate: true
+        },
+        trigger: null
+      });
+    }
   }
 
   resetForm() {
