@@ -22,6 +22,10 @@ class Register extends Component {
             <View style={{ justifyContent: 'center' }}>
               <Button title='Camera' onPress={() => this.getImageFromCamera()} />
             </View>
+            <View style={{ width: 10 }} />
+            <View style={{ justifyContent: 'center' }}>
+              <Button title='Gallery' onPress={() => this.getImageFromGallery()} />
+            </View>
           </View>
           <Input placeholder='Username' leftIcon={{ type: 'font-awesome', name: 'user-o' }} value={this.state.username}
             onChangeText={(username) => this.setState({ username })} />
@@ -43,6 +47,16 @@ class Register extends Component {
       }
     }
   }
+  async getImageFromGallery() {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status === 'granted') {
+      const capturedImage = await ImagePicker.launchImageLibraryAsync({ allowsEditing: true, aspect: [4, 3] });
+      if (!capturedImage.canceled) {
+        this.setState({ imageUrl: capturedImage.assets[0].uri });
+      }
+    }
+  }
+
   handleRegister() {
     alert('Coming soon!');
   }
